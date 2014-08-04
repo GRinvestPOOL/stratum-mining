@@ -22,3 +22,6 @@
 [submodule "externals/nist5_hash"]
 	path = externals/nist5_hash
 	url = https://github.com/minings/nist5_hash.git
+[submodule "externals/x15_hash"]
+	path = externals/x15_hash
+	url = https://github.com/minings/x15_hash.git
