@@ -9,10 +9,12 @@ elif settings.COINDAEMON_ALGO == 'scrypt-jane':
     scryptjane = __import__(settings.SCRYPTJANE_NAME)
 elif settings.COINDAEMON_ALGO == 'quark':
     import quark_hash
-elif settings.COINDAEMON_ALGO == 'x13':
-    import x13_hash
 elif settings.COINDAEMON_ALGO == 'x11':
     import x11_hash
+elif settings.COINDAEMON_ALGO == 'x13':
+    import x13_hash
+elif settings.COINDAEMON_ALGO == 'x15':
+    import x15_hash
 elif settings.COINDAEMON_ALGO == 'skeinhash':
     import skeinhash
 elif settings.COINDAEMON_ALGO == 'nist5':
@@ -160,16 +162,10 @@ class TemplateRegistry(object):
 
     def diff_to_target(self, difficulty):
         '''Converts difficulty to target'''
-        if settings.COINDAEMON_ALGO == 'scrypt' or 'scrypt-jane':
+        if settings.COINDAEMON_ALGO == 'scrypt' or 'scrypt-jane' or 'x11' or 'x13' or 'x15' or 'nist5':
             diff1 = 0x0000ffff00000000000000000000000000000000000000000000000000000000
         elif settings.COINDAEMON_ALGO == 'quark':
             diff1 = 0x000000ffff000000000000000000000000000000000000000000000000000000
-        elif settings.COINDAEMON_ALGO == 'x13':
-            diff1 = 0x0000ffff00000000000000000000000000000000000000000000000000000000
-        elif settings.COINDAEMON_ALGO == 'nist5':
-            diff1 = 0x0000ffff00000000000000000000000000000000000000000000000000000000
-        elif settings.COINDAEMON_ALGO == 'x11':
-            diff1 = 0x0000ffff00000000000000000000000000000000000000000000000000000000
         else:
             #diff1 = 0x00000000ffff0000000000000000000000000000000000000000000000000000
             diff1 = 0x00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff
@@ -294,11 +290,14 @@ class TemplateRegistry(object):
         elif settings.COINDAEMON_ALGO == 'nist5':
             hash_bin = nist5_hash.getPoWHash(
                 ''.join([header_bin[i * 4:i * 4 + 4][::-1] for i in range(0, 20)]))
+        elif settings.COINDAEMON_ALGO == 'x11':
+            hash_bin = x11_hash.getPoWHash(
+                ''.join([header_bin[i * 4:i * 4 + 4][::-1] for i in range(0, 20)]))
         elif settings.COINDAEMON_ALGO == 'x13':
             hash_bin = x13_hash.getPoWHash(
                 ''.join([header_bin[i * 4:i * 4 + 4][::-1] for i in range(0, 20)]))
-        elif settings.COINDAEMON_ALGO == 'x11':
-            hash_bin = x11_hash.getPoWHash(
+        elif settings.COINDAEMON_ALGO == 'x15':
+            hash_bin = x15_hash.getPoWHash(
                 ''.join([header_bin[i * 4:i * 4 + 4][::-1] for i in range(0, 20)]))
         elif settings.COINDAEMON_ALGO == 'quark':
             hash_bin = quark_hash.getPoWHash(
@@ -316,7 +315,7 @@ class TemplateRegistry(object):
         if settings.COINDAEMON_ALGO == 'scrypt' or settings.COINDAEMON_ALGO == 'scrypt-jane':
             header_hex = header_hex + \
                 "000000800000000000000000000000000000000000000000000000000000000000000000000000000000000080020000"
-        elif settings.COINDAEMON_ALGO == 'quark' or settings.COINDAEMON_ALGO == 'nist5' or settings.COINDAEMON_ALGO == 'x13' or settings.COINDAEMON_ALGO == 'x11':
+        elif settings.COINDAEMON_ALGO == 'quark' or 'nist5' or 'x11' or 'x13' or 'x15':
             header_hex = header_hex + \
                 "000000800000000000000000000000000000000000000000000000000000000000000000000000000000000080020000"
         else:

@@ -31,15 +31,18 @@ elif settings.COINDAEMON_ALGO == 'quark':
     import quark_hash
 elif settings.COINDAEMON_ALGO == 'skeinhash':
     import skeinhash
-elif settings.COINDAEMON_ALGO == 'x13':
-    log.debug("########################################### Loading X13 Support #########################################################")
-    import x13_hash
-elif settings.COINDAEMON_ALGO == 'nist5':
-    log.debug("########################################### Loading NIST5 Support #########################################################")
-    import nist5_hash
 elif settings.COINDAEMON_ALGO == 'x11':
     log.debug("########################################### Loading X11 Support #########################################################")
     import x11_hash
+elif settings.COINDAEMON_ALGO == 'x13':
+    log.debug("########################################### Loading X13 Support #########################################################")
+    import x13_hash
+elif settings.COINDAEMON_ALGO == 'x15':
+    log.debug("########################################### Loading X15 Support #########################################################")
+    import x15_hash
+elif settings.COINDAEMON_ALGO == 'nist5':
+    log.debug("########################################### Loading NIST5 Support #########################################################")
+    import nist5_hash
 else: 
     if settings.COINDAEMON_TX != False:
         log.debug("########################################### Loading SHA256 Transaction Message Support #########################################################")
@@ -248,6 +251,8 @@ class CBlock(object):
             self.quark = None
         elif settings.COINDAEMON_ALGO == 'x13':
             self.x13 = None
+        elif settings.COINDAEMON_ALGO == 'x15':
+            self.x15 = None
         elif settings.COINDAEMON_ALGO == 'nist5':
             self.nist5 = None
         elif settings.COINDAEMON_ALGO == 'x11':
@@ -308,6 +313,18 @@ class CBlock(object):
                 r.append(struct.pack("<I", self.nNonce))
                 self.x13 = uint256_from_str(x13_hash.getPoWHash(''.join(r)))
              return self.x13           
+    elif settings.COINDAEMON_ALGO == 'x15':
+         def calc_x15(self):
+             if self.x15 is None:
+                r = []
+                r.append(struct.pack("<i", self.nVersion))
+                r.append(ser_uint256(self.hashPrevBlock))
+                r.append(ser_uint256(self.hashMerkleRoot))
+                r.append(struct.pack("<I", self.nTime))
+                r.append(struct.pack("<I", self.nBits))
+                r.append(struct.pack("<I", self.nNonce))
+                self.x15 = uint256_from_str(x15_hash.getPoWHash(''.join(r)))
+             return self.x15
     elif settings.COINDAEMON_ALGO == 'nist5':
          def calc_nist5(self):
              if self.nist5 is None:
@@ -389,10 +406,12 @@ class CBlock(object):
             self.calc_quark()
         elif settings.COINDAEMON_ALGO == 'nist5':
             self.calc_nist5()
-        elif settings.COINDAEMON_ALGO == 'x13':
-            self.calc_x13()
         elif settings.COINDAEMON_ALGO == 'x11':
             self.calc_x11()
+        elif settings.COINDAEMON_ALGO == 'x13':
+            self.calc_x13()
+        elif settings.COINDAEMON_ALGO == 'x15':
+            self.calc_x15()
         elif settings.COINDAEMON_ALGO == 'scrypt-jane':
             self.calc_scryptjane
         elif settings.COINDAEMON_ALGO == 'skein':
@@ -411,11 +430,14 @@ class CBlock(object):
         elif settings.COINDAEMON_ALGO == 'nist5':
             if self.nist5 > target:
                 return False
+        elif settings.COINDAEMON_ALGO == 'x11':
+            if self.x11 > target:
+                return False                
         elif settings.COINDAEMON_ALGO == 'x13':
             if self.x13 > target:
                 return False                
-        elif settings.COINDAEMON_ALGO == 'x11':
-            if self.x11 > target:
+        elif settings.COINDAEMON_ALGO == 'x15':
+            if self.x15 > target:
                 return False                
         elif settings.COINDAEMON_ALGO == 'scrypt-jane':
             if self.scryptjane > target:
