@@ -9,6 +9,7 @@ You NEED to set the parameters in BASIC SETTINGS
 CONFIG_VERSION = 0.1
 # ******************** BASIC SETTINGS ***************
 # These are the MUST BE SET parameters!
+CURRENCY = 'LTC'
 
 CENTRAL_WALLET = 'set_valid_addresss_in_config!'                # Local coin address where money goes
 

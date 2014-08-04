@@ -41,11 +41,11 @@ class DB_Mysql_Vardiff(DB_Mysql.DB_Mysql):
                 """
                 INSERT INTO `shares`
                 (time, rem_host, username, our_result, 
-                  upstream_result, reason, solution, difficulty)
+                  upstream_result, reason, solution, difficulty,currency)
                 VALUES 
                 (FROM_UNIXTIME(%(time)s), %(host)s, 
                   %(uname)s, 
-                  %(lres)s, 'N', %(reason)s, %(solution)s, %(difficulty)s)
+                  %(lres)s, 'N', %(reason)s, %(solution)s, %(difficulty)s ,%(currency)s)
                 """,
                 {
                     "time": v[4], 
@@ -54,7 +54,8 @@ class DB_Mysql_Vardiff(DB_Mysql.DB_Mysql):
                     "lres": v[5], 
                     "reason": v[9],
                     "solution": v[2],
-                    "difficulty": v[3]
+                    "difficulty": v[3],
+                    "currency": settings.CURRENCY
                 }
             )
 
@@ -106,11 +107,11 @@ class DB_Mysql_Vardiff(DB_Mysql.DB_Mysql):
                 """
                 INSERT INTO `shares`
                 (time, rem_host, username, our_result, 
-                  upstream_result, reason, solution)
+                  upstream_result, reason, solution,currency)
                 VALUES 
                 (FROM_UNIXTIME(%(time)s), %(host)s, 
                   %(uname)s, 
-                  %(lres)s, %(result)s, %(reason)s, %(solution)s)
+                  %(lres)s, %(result)s, %(reason)s, %(solution)s, %(currency)s )
                 """,
                 {
                     "time": data[4],
@@ -119,7 +120,8 @@ class DB_Mysql_Vardiff(DB_Mysql.DB_Mysql):
                     "lres": data[5],
                     "result": data[5],
                     "reason": data[9],
-                    "solution": data[2]
+                    "solution": data[2],
+                    "currency": settings.CURRENCY
                 }
             )
             self.dbh.commit()

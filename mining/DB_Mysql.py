@@ -82,11 +82,11 @@ class DB_Mysql():
                 """
                 INSERT INTO `shares`
                 (time, rem_host, username, our_result, 
-                  upstream_result, reason, solution, difficulty)
+                  upstream_result, reason, solution, difficulty,currency)
                 VALUES 
-                (FROM_UNIXTIME(%(time)s), %(host)s, 
+                (FROM_UNIXTIME(%(time)s), %(host)s,
                   %(uname)s, 
-                  %(lres)s, 'N', %(reason)s, %(solution)s, %(difficulty)s)
+                  %(lres)s, 'N', %(reason)s, %(solution)s, %(difficulty)s , %(currency)s)
                 """,
                 {
                     "time": v[4], 
@@ -95,7 +95,8 @@ class DB_Mysql():
                     "lres": v[5], 
                     "reason": v[9],
                     "solution": v[2],
-                    "difficulty": v[3]
+                    "difficulty": v[3],
+                    "currency": settings.CURRENCY
                 }
             )
 
@@ -148,11 +149,11 @@ class DB_Mysql():
                 """
                 INSERT INTO `shares`
                 (time, rem_host, username, our_result, 
-                  upstream_result, reason, solution)
+                  upstream_result, reason, solution,currency)
                 VALUES 
                 (FROM_UNIXTIME(%(time)s), %(host)s, 
                   %(uname)s, 
-                  %(lres)s, %(result)s, %(reason)s, %(solution)s)
+                  %(lres)s, %(result)s, %(reason)s, %(solution)s , %(currency)s )
                 """,
                 {
                     "time": data[4],
@@ -161,7 +162,8 @@ class DB_Mysql():
                     "lres": data[5],
                     "result": data[5],
                     "reason": data[9],
-                    "solution": data[2]
+                    "solution": data[2],
+                    "currency": settings.CURRENCY
                 }
             )
 
@@ -220,7 +222,7 @@ class DB_Mysql():
     def insert_worker(self, account_id, username, password):
         log.debug("Adding new worker %s", username)
         query = "INSERT INTO pool_worker"
-        self.execute(query + '(account_id, username, password) VALUES (%s, %s, %s);', (account_id, username, password))
+        self.execute(query + '(account_id, username, password , currency) VALUES (%s, %s, %s , %s);', (account_id, username, password , settings.CURRENCY))
         self.dbh.commit()
         return str(username)
         
@@ -263,13 +265,14 @@ class DB_Mysql():
         self.execute(
             """
             INSERT INTO `pool_worker`
-            (`username`, `password`)
+            (`username`, `password`,`currency`)
             VALUES
-            (%(uname)s, %(pass)s)
+            (%(uname)s, %(pass)s, %(currency)s )
             """,
             {
                 "uname": username, 
-                "pass": password
+                "pass": password,
+                "currency": settings.CURRENCY
             }
         )
         
@@ -346,7 +349,7 @@ class DB_Mysql():
     def insert_worker(self, account_id, username, password):
         log.debug("Adding new worker %s", username)
         query = "INSERT INTO pool_worker"
-        self.execute(query + '(account_id, username, password) VALUES (%s, %s, %s);', (account_id, username, password))
+        self.execute(query + '(account_id, username, password,currency) VALUES (%s, %s, %s, %s);', (account_id, username, password,settings.CURRENCY))
         self.dbh.commit()
         return str(username)
 
