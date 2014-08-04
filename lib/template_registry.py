@@ -316,7 +316,7 @@ class TemplateRegistry(object):
         if settings.COINDAEMON_ALGO == 'scrypt' or settings.COINDAEMON_ALGO == 'scrypt-jane':
             header_hex = header_hex + \
                 "000000800000000000000000000000000000000000000000000000000000000000000000000000000000000080020000"
-        elif settings.COINDAEMON_ALGO == 'quark' or settings.COINDAEMON_ALGO == 'x13' or settings.COINDAEMON_ALGO == 'x11':
+        elif settings.COINDAEMON_ALGO == 'quark' or settings.COINDAEMON_ALGO == 'nist5' or settings.COINDAEMON_ALGO == 'x13' or settings.COINDAEMON_ALGO == 'x11':
             header_hex = header_hex + \
                 "000000800000000000000000000000000000000000000000000000000000000000000000000000000000000080020000"
         else:
