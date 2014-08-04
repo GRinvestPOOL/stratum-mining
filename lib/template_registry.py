@@ -15,6 +15,8 @@ elif settings.COINDAEMON_ALGO == 'x11':
     import x11_hash
 elif settings.COINDAEMON_ALGO == 'skeinhash':
     import skeinhash
+elif settings.COINDAEMON_ALGO == 'nist5':
+    import nist5_hash
 else:
     pass
 from twisted.internet import defer
@@ -164,6 +166,8 @@ class TemplateRegistry(object):
             diff1 = 0x000000ffff000000000000000000000000000000000000000000000000000000
         elif settings.COINDAEMON_ALGO == 'x13':
             diff1 = 0x0000ffff00000000000000000000000000000000000000000000000000000000
+        elif settings.COINDAEMON_ALGO == 'nist5':
+            diff1 = 0x0000ffff00000000000000000000000000000000000000000000000000000000
         elif settings.COINDAEMON_ALGO == 'x11':
             diff1 = 0x0000ffff00000000000000000000000000000000000000000000000000000000
         else:
@@ -287,13 +291,15 @@ class TemplateRegistry(object):
                 hash_bin = scryptjane.getPoWHash(
                     ''.join([header_bin[i * 4:i * 4 + 4][::-1] for i in range(0, 20)]), int(ntime, 16))
 
+        elif settings.COINDAEMON_ALGO == 'nist5':
+            hash_bin = nist5_hash.getPoWHash(
+                ''.join([header_bin[i * 4:i * 4 + 4][::-1] for i in range(0, 20)]))
         elif settings.COINDAEMON_ALGO == 'x13':
             hash_bin = x13_hash.getPoWHash(
                 ''.join([header_bin[i * 4:i * 4 + 4][::-1] for i in range(0, 20)]))
         elif settings.COINDAEMON_ALGO == 'x11':
             hash_bin = x11_hash.getPoWHash(
                 ''.join([header_bin[i * 4:i * 4 + 4][::-1] for i in range(0, 20)]))
-
         elif settings.COINDAEMON_ALGO == 'quark':
             hash_bin = quark_hash.getPoWHash(
                 ''.join([header_bin[i * 4:i * 4 + 4][::-1] for i in range(0, 20)]))
