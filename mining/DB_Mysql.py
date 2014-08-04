@@ -116,11 +116,12 @@ class DB_Mysql():
         self.execute(
             """
             Select `id` from `shares`
-            WHERE `solution` = %(solution)s
+            WHERE `solution` = %(solution)s AND `currency` = %(currency)s
             LIMIT 1
             """,
             {
-                "solution": data[2]
+                "solution": data[2],
+                "currency": settings.CURRENCY
             }
         )
 
