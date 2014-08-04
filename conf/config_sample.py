@@ -10,7 +10,6 @@ CONFIG_VERSION = 0.1
 # ******************** BASIC SETTINGS ***************
 # These are the MUST BE SET parameters!
 CURRENCY = 'LTC'
-
 CENTRAL_WALLET = 'set_valid_addresss_in_config!'                # Local coin address where money goes
 
 COINDAEMON_TRUSTED_HOST = 'localhost'
@@ -19,6 +18,7 @@ COINDAEMON_TRUSTED_USER = 'user'
 COINDAEMON_TRUSTED_PASSWORD = 'somepassword'
 
 COINDAEMON_ALGO = 'scrypt'    # The available options are:  scrypt, sha256d, scrypt-jane, skeinhash, and quark
+COINDAEMON_Reward = 'POW'
 SCRYPTJANE_NAME = 'vtc_scrypt'# Set this to the Scrypt jane module name e.g. yac_scrypt or vtc_scrypt
 COINDAEMON_TX = False         # For Coins which support TX Messages please enter yes in the TX selection
 
