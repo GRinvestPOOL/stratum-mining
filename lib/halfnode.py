@@ -306,7 +306,7 @@ class CBlock(object):
              return self.x13           
     elif settings.COINDAEMON_ALGO == 'x11':
          def calc_x11(self):
-             if self.x13 is None:
+             if self.x11 is None:
                 r = []
                 r.append(struct.pack("<i", self.nVersion))
                 r.append(ser_uint256(self.hashPrevBlock))
